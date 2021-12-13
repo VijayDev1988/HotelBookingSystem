@@ -1,15 +1,11 @@
 ﻿using HBS.Application.DTO.Account;
 using HBS.Client.Services.Interfaces;
-using HBS.Client.Utilities;
 using HBS.Client.ViewModel;
 using HBS.Identity.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -45,6 +41,8 @@ namespace HBS.Client.Controllers
             {
                 var result = await _accountServices.RegisterAsync(model);
                 ViewBag.ErrorTitle = result;
+                ModelState.Clear();
+                return View(new RegisterViewModel());
             }
             return View(model);
         }
@@ -67,7 +65,7 @@ namespace HBS.Client.Controllers
             if (ModelState.IsValid)
             {
                 var response = await AuthenticateUser(loginViewModel.Email, loginViewModel.Password);
-                if (response.IsVerified)
+                if (response != null &&response.IsVerified)
                 {
                     if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
                         return RedirectToAction("BookRoom", "Room");
@@ -75,9 +73,11 @@ namespace HBS.Client.Controllers
                     return LocalRedirect(loginViewModel.ReturnUrl);
                 }
 
-                ModelState.AddModelError("", "Login failed");
+                ModelState.AddModelError("", "User not found");
+                loginViewModel.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 return View(loginViewModel);
             }
+
             return View(loginViewModel);
         }
 
@@ -174,6 +174,7 @@ namespace HBS.Client.Controllers
             };
 
             var jwtResponse = await _accountServices.AuthenticateUser(jwtRequest);
+            if (jwtResponse == null) return null;
             HttpContext.Session.SetString("email", jwtResponse.Email);
 
             if (jwtResponse != null && jwtResponse.IsVerified)

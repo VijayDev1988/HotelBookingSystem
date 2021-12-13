@@ -18,6 +18,7 @@ namespace HBS.Client.Utilities
 
         public const string JWT_TOKEN = "token";
         public const string EMAIL = "email";
+        public const string PASSWORD_REGEX = @"^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=]).*$";
 
     }
 }

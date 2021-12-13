@@ -28,10 +28,10 @@ namespace HBS.Persistence.Repositories
             // Get the booking detilas for the given days
             var bookings = await _roomBookings
                 .Include(r => r.Room)
-                .Where(r => (fromBookingDate >= r.FromTime && fromBookingDate <= r.ToTime)
-                                    || (toBookingDate >= r.FromTime && toBookingDate <= r.ToTime)
-                                    || (r.FromTime >= fromBookingDate && r.FromTime <= toBookingDate)
-                                    || (r.ToTime >= fromBookingDate && r.ToTime <= toBookingDate)
+                .Where(r => (fromBookingDate.Date >= r.FromTime.Date && fromBookingDate.Date <= r.ToTime.Date)
+                                    || (toBookingDate.Date >= r.FromTime.Date && toBookingDate.Date <= r.ToTime.Date)
+                                    || (r.FromTime.Date >= fromBookingDate.Date && r.FromTime.Date <= toBookingDate.Date)
+                                    || (r.ToTime.Date >= fromBookingDate.Date && r.ToTime.Date <= toBookingDate.Date)
                                     ).ToListAsync();
 
             //Left join to get the available room for the days

@@ -31,7 +31,7 @@ namespace HBS.Persistence.Repositories
         {
             var bookings = await _roomBookings
                 .Include(r => r.Room)
-                .Where(r => (bookingDate >= r.FromTime && bookingDate <= r.ToTime)).ToListAsync();
+                .Where(r => (bookingDate.Date >= r.FromTime.Date && bookingDate.Date <= r.ToTime.Date)).ToListAsync();
 
             //Left join to get the status of the days
             var result = (from room in _rooms.ToList()

@@ -106,9 +106,9 @@ namespace HBS.Identity.Services
 
             IdentityResult result = null;
             if (string.IsNullOrEmpty(request.Password))
-                result = await _userManager.CreateAsync(user, request.Password);
-            else
                 result = await _userManager.CreateAsync(user);
+            else
+                result = await _userManager.CreateAsync(user, request.Password);
 
             if (result.Succeeded)
             {
