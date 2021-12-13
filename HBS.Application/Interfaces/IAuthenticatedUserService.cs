@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HBS.Application.Interfaces
+{
+    public interface IAuthenticatedUserService
+    {
+        public string UserId { get; }
+    }
+}

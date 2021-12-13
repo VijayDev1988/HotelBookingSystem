@@ -1,0 +1,46 @@
+﻿@model IEnumerable<BookingHistoryViewModel>
+@{
+    ViewBag.Title = "Booking History";
+}
+<h1>Book History</h1>
+<hr />
+
+<div class="align-content-center right m-2">
+    <a asp-controller="Room" asp-action="BookRoom" class="btn btn-primary">Back to Booking Page</a>
+</div>
+<div>
+    @if (Model.Any())
+    {
+        foreach (var bookingHistory in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Room Number : @bookingHistory.RoomBooking.Room.RoomNumber </h5>
+                </div>
+                <div class="card-body">
+                    <b class="card-title">Type : </b>@bookingHistory.RoomBooking.Room.RoomType
+                </div>
+                <div class="card-body">
+                    <b class="card-title">Booking From Date : </b>@bookingHistory.RoomBooking.FromTime
+                </div>
+                <div class="card-body">
+                    <b class="card-title">Booking To Date : </b>@bookingHistory.RoomBooking.ToTime
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header">
+                No Booking were made
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    Use the button above to book a room
+                </h5>
+            </div>
+        </div>
+    }
+</div>
